@@ -16,6 +16,9 @@ GameObject:
   - component: {fileID: 7808641761109947438}
   - component: {fileID: 7411057241746507462}
   - component: {fileID: 8107066053290867502}
+  - component: {fileID: 3033183305867388435}
+  - component: {fileID: 8345982855557330975}
+  - component: {fileID: 5865301762479906142}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -133,6 +136,9 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 7411057241746507462}
   - {fileID: 8107066053290867502}
+  - {fileID: 3033183305867388435}
+  - {fileID: 8345982855557330975}
+  - {fileID: 5865301762479906142}
   ForceRemoteRenderTimeframe: 0
 --- !u!143 &7808641761109947438
 CharacterController:
@@ -191,3 +197,45 @@ MonoBehaviour:
   PlayerSpeed: 2
   JumpForce: 5
   GravityValue: -9.81
+  CinemachinePlayerCamera: {fileID: 0}
+--- !u!114 &3033183305867388435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6533908021598029935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c722af5a408ffd4fb8ac3d90992bd6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MeshRenderer: {fileID: 4949107909887042373}
+  _NetworkedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &8345982855557330975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6533908021598029935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6cf08d4d6a7d2048a7968a5223f40ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _NetworkedHealth: 100
+--- !u!114 &5865301762479906142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6533908021598029935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 599b5f6b8e6462f4faa47f7198dedc00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 10
+  PlayerMovement: {fileID: 8107066053290867502}
