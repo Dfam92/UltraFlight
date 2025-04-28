@@ -1,4 +1,5 @@
 using Fusion;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
@@ -13,6 +14,8 @@ public class PlayerMovement : NetworkBehaviour
     public float JumpForce = 5f;
     public float GravityValue = -9.81f;
 
+    public CinemachineCamera CinemachinePlayerCamera;
+
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
@@ -23,6 +26,16 @@ public class PlayerMovement : NetworkBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             _jumpPressed = true;
+        }
+    }
+
+    public override void Spawned()
+    {
+        if (HasStateAuthority)
+        {
+            CinemachinePlayerCamera = GameObject.FindWithTag("PlayerCamera").GetComponent<CinemachineCamera>();
+            CinemachinePlayerCamera.Follow = transform;
+            CinemachinePlayerCamera.LookAt = transform;
         }
     }
 
