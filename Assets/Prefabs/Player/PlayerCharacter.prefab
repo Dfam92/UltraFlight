@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 5652288111136751288}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.37, y: 0, z: -2.1}
+  m_LocalPosition: {x: 0.37, y: 0.5, z: -2.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -144,7 +144,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -193,13 +193,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0.86
-  m_Radius: 0.5
+  m_Height: 0.5
+  m_Radius: 2
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1.29, z: 0}
 --- !u!114 &7411057241746507462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,14 +231,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxForwardSpeed: 200
   LateralSpeed: 30
-  TiltAmount: 20
+  TiltAmount: 15
   Acceleration: 40
   Deceleration: 50
-  JumpForce: 20
-  GravityValue: -15
+  JumpForce: 15
+  GravityValue: -20
   AllowBackwardMovement: 0
   CinemachinePlayerCamera: {fileID: 0}
   ExtraFallGravityMultiplier: 5
+  shipVisual: {fileID: 2797672422667249416}
+  MaxTiltZ: 4.1
+  TiltLerpSpeed: 20
 --- !u!114 &3033183305867388435
 MonoBehaviour:
   m_ObjectHideFlags: 0

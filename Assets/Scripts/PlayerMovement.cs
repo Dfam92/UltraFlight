@@ -26,9 +26,23 @@ public class PlayerMovement : NetworkBehaviour
     private float currentForwardSpeed = 0f;
     public float ExtraFallGravityMultiplier = 2f; // Multiplicador de gravidade extra quando o jogador quiser descer mais rápido
 
+    [SerializeField] private Transform shipVisual; // arraste o ShipSelected aqui no Inspector
+
+    [Range(0f, 90f)] public float MaxTiltZ = 15f;
+    public float TiltLerpSpeed = 5f;
+    private Quaternion _groundAlignedRotation = Quaternion.identity;
+
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
+    }
+
+    private void Start()
+    {
+        if (shipVisual == null)
+        {
+            shipVisual = transform.Find("ShipSelected");
+        }
     }
 
     void Update()
@@ -108,20 +122,50 @@ public class PlayerMovement : NetworkBehaviour
 
         _controller.Move(move + _velocity * Runner.DeltaTime);
 
-        // Inclinação no eixo Z (movimento lateral)
-        float targetZRotation = -horizontal * TiltAmount;
-
-        // Inclinação no eixo X (pulo)
-        float targetXRotation = 0f;
-        if (!_controller.isGrounded)
-        {
-            targetXRotation = _velocity.y > 0 ? -10f : 10f;
-        }
-
-        // Combina ambas rotações
-        Quaternion targetRotation = Quaternion.Euler(targetXRotation, 0, targetZRotation);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Runner.DeltaTime * 5f);
-
         _jumpPressed = false;
+
+        AlignToGroundNormal();
+        ApplyTiltRotation(horizontal);
+    }
+
+    private void ApplyTiltRotation(float horizontalInput)
+    {
+        float targetZRotation = -horizontalInput * TiltAmount;
+
+        Quaternion tiltOffset = Quaternion.Euler(0f, 0f, targetZRotation);
+        Quaternion finalRotation = _groundAlignedRotation * tiltOffset;
+
+        shipVisual.rotation = Quaternion.Slerp(shipVisual.rotation, finalRotation, Runner.DeltaTime * 5f);
+    }
+
+    private void AlignToGroundNormal()
+    {
+        if (_controller.isGrounded)
+        {
+            Ray ray = new Ray(transform.position + Vector3.up * 0.5f, Vector3.down);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 2f))
+            {
+                Vector3 groundNormal = hitInfo.normal;
+                Vector3 projectedForward = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
+                Quaternion targetRotation = Quaternion.LookRotation(projectedForward, groundNormal);
+
+                Vector3 euler = targetRotation.eulerAngles;
+                euler.x = 0f;
+                targetRotation = Quaternion.Euler(euler);
+
+                _groundAlignedRotation = Quaternion.Slerp(_groundAlignedRotation, targetRotation, Runner.DeltaTime * 10f);
+            }
+        }
+        else
+        {
+            // Voltar ao alinhamento reto (sem slope)
+            Quaternion uprightRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+
+            Vector3 euler = uprightRotation.eulerAngles;
+            euler.x = 0f;
+            uprightRotation = Quaternion.Euler(euler);
+
+            _groundAlignedRotation = Quaternion.Slerp(_groundAlignedRotation, uprightRotation, Runner.DeltaTime * 5f);
+        }
     }
 }
