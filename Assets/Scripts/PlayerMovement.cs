@@ -24,6 +24,7 @@ public class PlayerMovement : NetworkBehaviour
     public CinemachineCamera CinemachinePlayerCamera;
 
     private float currentForwardSpeed = 0f;
+    public float ExtraFallGravityMultiplier = 2f; // Multiplicador de gravidade extra quando o jogador quiser descer mais rápido
 
     private void Awake()
     {
@@ -60,13 +61,13 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (_controller.isGrounded)
         {
-            _velocity = new Vector3(0, -1, 0);
+            _velocity.y = -1f; // Reset do pulo ao tocar o chão
         }
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        // Aceleração e desaceleração
+        // Aceleração e desaceleração contínua
         if (vertical > 0)
         {
             currentForwardSpeed += Acceleration * Runner.DeltaTime;
@@ -77,33 +78,48 @@ public class PlayerMovement : NetworkBehaviour
         }
         else
         {
-            // Desacelera suavemente se nada pressionado
             currentForwardSpeed -= Deceleration * Runner.DeltaTime * 0.5f;
         }
 
-        // Clamp dependendo da flag
-        if (AllowBackwardMovement)
-        {
-            currentForwardSpeed = Mathf.Clamp(currentForwardSpeed, -MaxForwardSpeed, MaxForwardSpeed);
-        }
-        else
-        {
-            currentForwardSpeed = Mathf.Clamp(currentForwardSpeed, 0f, MaxForwardSpeed);
-        }
+        // Clamp de velocidade (incluindo debug para trás)
+        currentForwardSpeed = AllowBackwardMovement
+            ? Mathf.Clamp(currentForwardSpeed, -MaxForwardSpeed, MaxForwardSpeed)
+            : Mathf.Clamp(currentForwardSpeed, 0f, MaxForwardSpeed);
 
         Vector3 move = new Vector3(horizontal * LateralSpeed, 0, currentForwardSpeed) * Runner.DeltaTime;
 
-        _velocity.y += GravityValue * Runner.DeltaTime;
+        // 🔽 Descida rápida (fast fall)
+        bool isFallingFast = !_controller.isGrounded && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow));
+
+        float gravityThisFrame = GravityValue;
+
+        if (isFallingFast)
+        {
+            gravityThisFrame *= ExtraFallGravityMultiplier;
+        }
+
+        _velocity.y += gravityThisFrame * Runner.DeltaTime;
+
+        // Aplicação do pulo
         if (_jumpPressed && _controller.isGrounded)
         {
-            _velocity.y += JumpForce;
+            _velocity.y = JumpForce;
         }
 
         _controller.Move(move + _velocity * Runner.DeltaTime);
 
-        // Inclinação no eixo Z
+        // Inclinação no eixo Z (movimento lateral)
         float targetZRotation = -horizontal * TiltAmount;
-        Quaternion targetRotation = Quaternion.Euler(0, 0, targetZRotation);
+
+        // Inclinação no eixo X (pulo)
+        float targetXRotation = 0f;
+        if (!_controller.isGrounded)
+        {
+            targetXRotation = _velocity.y > 0 ? -10f : 10f;
+        }
+
+        // Combina ambas rotações
+        Quaternion targetRotation = Quaternion.Euler(targetXRotation, 0, targetZRotation);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Runner.DeltaTime * 5f);
 
         _jumpPressed = false;

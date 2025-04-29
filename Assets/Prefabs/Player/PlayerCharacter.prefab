@@ -234,10 +234,11 @@ MonoBehaviour:
   TiltAmount: 20
   Acceleration: 40
   Deceleration: 50
-  JumpForce: 5
-  GravityValue: -5
+  JumpForce: 20
+  GravityValue: -15
   AllowBackwardMovement: 0
   CinemachinePlayerCamera: {fileID: 0}
+  ExtraFallGravityMultiplier: 5
 --- !u!114 &3033183305867388435
 MonoBehaviour:
   m_ObjectHideFlags: 0
