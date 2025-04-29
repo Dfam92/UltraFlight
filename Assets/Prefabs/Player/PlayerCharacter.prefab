@@ -149,7 +149,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
+  m_Height: 1.03
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1005647889973945117
@@ -193,7 +193,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 0.86
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -229,9 +229,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f468f84c82a74bba2eecafb5cb399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeed: 50
+  MaxForwardSpeed: 200
+  LateralSpeed: 30
+  TiltAmount: 20
+  Acceleration: 40
+  Deceleration: 50
   JumpForce: 5
   GravityValue: -5
+  AllowBackwardMovement: 0
   CinemachinePlayerCamera: {fileID: 0}
 --- !u!114 &3033183305867388435
 MonoBehaviour:
