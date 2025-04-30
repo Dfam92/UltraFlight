@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     private Vector3 _velocity;
-    private bool _jumpPressed;
+    public bool _jumpPressed;
 
     private CharacterController _controller;
 
@@ -31,6 +31,11 @@ public class PlayerMovement : NetworkBehaviour
     [Range(0f, 90f)] public float MaxTiltZ = 15f;
     public float TiltLerpSpeed = 5f;
     private Quaternion _groundAlignedRotation = Quaternion.identity;
+
+
+    private float currentXTilt = 0f;
+    public float MaxTiltX = 15f;
+    public float TiltXSpeed = 5f;
 
     private void Awake()
     {
@@ -126,6 +131,7 @@ public class PlayerMovement : NetworkBehaviour
 
         AlignToGroundNormal();
         ApplyTiltRotation(horizontal);
+        ApplyJumpTilt();
     }
 
     private void ApplyTiltRotation(float horizontalInput)
@@ -167,5 +173,35 @@ public class PlayerMovement : NetworkBehaviour
 
             _groundAlignedRotation = Quaternion.Slerp(_groundAlignedRotation, uprightRotation, Runner.DeltaTime * 5f);
         }
+    }
+
+    private void ApplyJumpTilt()
+    {
+        float targetXTilt = 0f;
+
+        if (!_controller.isGrounded)
+        {
+            if (_velocity.y > 0.1f)
+            {
+                targetXTilt = -MaxTiltX; // inclinando para trás ao subir
+            }
+            else if (_velocity.y < -0.1f)
+            {
+                targetXTilt = MaxTiltX; // inclinando para frente ao cair
+            }
+        }
+
+        // Suavizar a transição
+        currentXTilt = Mathf.Lerp(currentXTilt, targetXTilt, Runner.DeltaTime * TiltXSpeed);
+
+        // Aplicar ao visual (sem afetar tilt lateral)
+        Quaternion currentRotation = shipVisual.localRotation;
+        Vector3 euler = currentRotation.eulerAngles;
+
+        // Garantir que o ângulo esteja entre -180 e 180
+        if (euler.x > 180f) euler.x -= 360f;
+
+        euler.x = currentXTilt;
+        shipVisual.localRotation = Quaternion.Euler(euler);
     }
 }

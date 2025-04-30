@@ -194,7 +194,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 0.5
-  m_Radius: 2
+  m_Radius: 1.85
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -229,19 +229,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f468f84c82a74bba2eecafb5cb399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxForwardSpeed: 200
+  _jumpPressed: 0
+  MaxForwardSpeed: 150
   LateralSpeed: 30
   TiltAmount: 15
-  Acceleration: 40
-  Deceleration: 50
-  JumpForce: 15
-  GravityValue: -20
+  Acceleration: 30
+  Deceleration: 80
+  JumpForce: 20
+  GravityValue: -15
   AllowBackwardMovement: 0
   CinemachinePlayerCamera: {fileID: 0}
   ExtraFallGravityMultiplier: 5
   shipVisual: {fileID: 2797672422667249416}
   MaxTiltZ: 4.1
   TiltLerpSpeed: 20
+  MaxTiltX: 15
+  TiltXSpeed: 5
 --- !u!114 &3033183305867388435
 MonoBehaviour:
   m_ObjectHideFlags: 0
