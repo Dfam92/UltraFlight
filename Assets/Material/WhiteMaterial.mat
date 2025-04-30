@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: WhiteMaterial
-  m_Shader: {fileID: 4800000, guid: 26e0bf06b35ed0a409e798a163ed8446, type: 3}
+  m_Shader: {fileID: 4800000, guid: 476bcf3644ccf33409bd7285c272ad72, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -62,8 +62,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 5ea29a9c02cd80b4592c806b81971772, type: 3}
+        m_Scale: {x: 10, y: 24}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -100,7 +100,11 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BulgeStrength: -0.25
+    - _BulgeExponent: 1.86
+    - _BulgeFalloff: 0.19
+    - _BulgeRadius: 0
+    - _BulgeScale: 1.12
+    - _BulgeStrength: -0.43
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
