@@ -230,10 +230,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _jumpPressed: 0
-  MaxForwardSpeed: 150
+  MaxForwardSpeed: 100
   LateralSpeed: 30
   TiltAmount: 15
-  Acceleration: 30
+  Acceleration: 20
   Deceleration: 80
   JumpForce: 20
   GravityValue: -15
