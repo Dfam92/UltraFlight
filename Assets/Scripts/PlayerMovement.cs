@@ -10,14 +10,17 @@ public class PlayerMovement : NetworkBehaviour
     private CharacterController _controller;
 
     public float MaxForwardSpeed = 10f;
+    private float _defaultMaxForwardSpeed = 0f;
     public float LateralSpeed = 2f;
     public float TiltAmount = 15f;
 
     public float Acceleration = 1f;
+    private float _defaultAcceleration = 0f;    
     public float Deceleration = 2f;
 
     public float JumpForce = 5f;
     public float GravityValue = -9.81f;
+    private float _defaultGravity = 0;
 
     public bool AllowBackwardMovement = false; // 🔧 Debug flag
 
@@ -37,6 +40,8 @@ public class PlayerMovement : NetworkBehaviour
     public float MaxTiltX = 15f;
     public float TiltXSpeed = 5f;
 
+    private bool _inputBlocked = false;
+
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
@@ -48,6 +53,10 @@ public class PlayerMovement : NetworkBehaviour
         {
             shipVisual = transform.Find("ShipSelected");
         }
+
+        _defaultGravity = GravityValue;
+        _defaultMaxForwardSpeed = MaxForwardSpeed;
+        _defaultAcceleration = Acceleration;
     }
 
     void Update()
@@ -78,9 +87,11 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        if (_inputBlocked) return;
         if (_controller.isGrounded)
         {
             _velocity.y = -1f; // Reset do pulo ao tocar o chão
+            GravityValue = _defaultGravity;
         }
 
         float horizontal = Input.GetAxis("Horizontal");
@@ -123,6 +134,7 @@ public class PlayerMovement : NetworkBehaviour
         if (_jumpPressed && _controller.isGrounded)
         {
             _velocity.y = JumpForce;
+            GravityValue = GravityValue * 0.5f;
         }
 
         _controller.Move(move + _velocity * Runner.DeltaTime);
@@ -204,4 +216,47 @@ public class PlayerMovement : NetworkBehaviour
         euler.x = currentXTilt;
         shipVisual.localRotation = Quaternion.Euler(euler);
     }
+
+    public void ResetMovementState()
+    {
+        currentForwardSpeed = 0f;
+        _velocity = Vector3.zero;
+        GravityValue = _defaultGravity;
+        BlockInput(0.1f);
+    }
+
+    public void ResetMaxSpeed()
+    {
+        MaxForwardSpeed = _defaultMaxForwardSpeed;
+        Acceleration = _defaultAcceleration;
+    }
+
+    public void BlockInput(float duration)
+    {
+        _inputBlocked = true;
+        Invoke(nameof(UnblockInput), duration);
+    }
+
+    private void UnblockInput()
+    {
+        _inputBlocked = false;
+    }
+
+    public void OnTriggerAccelerationFloor()
+    {
+        Debug.Log("Boosting");
+        Acceleration = Acceleration + 20;
+        MaxForwardSpeed = MaxForwardSpeed + 200;
+        currentForwardSpeed += 50;
+        Invoke(nameof(ResetMaxSpeed), 1);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("BoostFloor"))
+        {
+            OnTriggerAccelerationFloor();
+        }
+    }
+
 }

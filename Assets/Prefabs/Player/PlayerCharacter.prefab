@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 5865301762479906142}
   m_Layer: 0
   m_Name: PlayerCharacter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,8 +235,8 @@ MonoBehaviour:
   TiltAmount: 15
   Acceleration: 20
   Deceleration: 80
-  JumpForce: 20
-  GravityValue: -15
+  JumpForce: 15
+  GravityValue: -30
   AllowBackwardMovement: 0
   CinemachinePlayerCamera: {fileID: 0}
   ExtraFallGravityMultiplier: 5
