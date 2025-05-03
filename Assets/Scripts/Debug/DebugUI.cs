@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 
-public class DebugUI : NetworkBehaviour
+public class DebugUI : SimulationBehaviour
 {
     public PlayerMovement playerMovement;
     public TextMeshProUGUI debugText;

@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public class CheckPlayerOutOfRoad : NetworkBehaviour
+public class CheckPlayerOutOfRoad : SimulationBehaviour
 {
     [SerializeField] CheckpointTeleportManager CheckpointTeleportManager;
 
@@ -23,6 +23,7 @@ public class CheckPlayerOutOfRoad : NetworkBehaviour
                 playerObj.transform.rotation = CheckpointTeleportManager.transformToMovePlayer.rotation;
 
                 playerObj.GetComponent<PlayerMovement>().ResetMovementState();
+
 
                 if (controller != null)
                     controller.enabled = true;
