@@ -1,22 +1,22 @@
-using Fusion;
-using System.Linq;
-using UnityEditor.Networking.PlayerConnection;
+Ôªøusing Fusion;
+using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-
 public class PlayerNetworkBehaviour : NetworkBehaviour, IPlayerLeft
 {
-
-
-    public override void Spawned()
+    public override async void Spawned()
     {
-        // Determine a posiÁ„o do jogador com base na sua ordem de chegada
-        PlayerRef localPlayer = Runner.LocalPlayer;
-        var activePlayersList = Runner.ActivePlayers.ToList();
-        int playerIndex = activePlayersList.IndexOf(localPlayer);
-        Vector3 spawnPosition = GetSpawnPosition(playerIndex);
-        Runner.GetPlayerObject(localPlayer).transform.position = spawnPosition;
+        if (HasStateAuthority)
+        {
+            PlayerRef localPlayer = Runner.LocalPlayer;
+            Vector3 spawnPosition = GetSpawnPosition(localPlayer.PlayerId - 1);
+            Debug.Log($"üî¢ Spawn position for player {localPlayer}: {spawnPosition}");
+            NetworkTransform netTransform = GetComponent<NetworkTransform>();
+            await Task.Delay(1000); // ‚è≥ Espera 2 segundos antes de teleportar
+            netTransform.Teleport(spawnPosition);
+            //gameObject.transform.position = spawnPosition;
+        }
     }
+
 
     public void PlayerLeft(PlayerRef player)
     {
@@ -37,6 +37,7 @@ public class PlayerNetworkBehaviour : NetworkBehaviour, IPlayerLeft
 
     private Vector3 GetSpawnPosition(int playerIndex)
     {
+        Debug.Log("PlayerIndex: " + playerIndex);
         var spawner = Runner.gameObject.GetComponent<PlayerSpawner>();
 
         switch (playerIndex)

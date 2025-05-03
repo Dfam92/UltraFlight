@@ -53,6 +53,7 @@ GameObject:
   - component: {fileID: 3033183305867388435}
   - component: {fileID: 8345982855557330975}
   - component: {fileID: 5865301762479906142}
+  - component: {fileID: 1709523144345879249}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -174,6 +175,7 @@ MonoBehaviour:
   - {fileID: 3033183305867388435}
   - {fileID: 8345982855557330975}
   - {fileID: 5865301762479906142}
+  - {fileID: 1709523144345879249}
   ForceRemoteRenderTimeframe: 0
 --- !u!143 &7808641761109947438
 CharacterController:
@@ -286,6 +288,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 10
   PlayerMovement: {fileID: 8107066053290867502}
+--- !u!114 &1709523144345879249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6533908021598029935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b714433d110eeb4994f4b61853d7be5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3075984313272365751
 PrefabInstance:
   m_ObjectHideFlags: 0

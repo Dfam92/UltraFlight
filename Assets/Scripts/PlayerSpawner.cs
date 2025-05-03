@@ -19,15 +19,11 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
     {
         if (player == Runner.LocalPlayer)
         {
-            // Log da posição antes de spawnar
-           // Debug.Log($"🔢 Spawn position for player {player}: {spawnPosition}");
+           
 
             // Spawn o jogador
             NetworkObject playerNetworkObj = Runner.Spawn(
-                PlayerPrefab,
-                Vector3.zero,
-                Quaternion.identity,
-                player
+                PlayerPrefab
             );
 
             Runner.SetPlayerObject(player, playerNetworkObj);

@@ -2243,7 +2243,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runner: {fileID: 1152128402}
   sessionId: 
-  _playerList: []
 --- !u!4 &746256958
 Transform:
   m_ObjectHideFlags: 0
@@ -2818,10 +2817,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 6533908021598029935, guid: e976381b7dd765d4ba0059385b3a2bbc, type: 3}
   spawnPositions:
-  - {x: -13, y: 0, z: 0}
-  - {x: -5, y: 0, z: 0}
-  - {x: 5, y: 0, z: 0}
-  - {x: 13, y: 0, z: 0}
+  - {x: -20, y: 20, z: 0}
+  - {x: -13, y: 20, z: 0}
+  - {x: 13, y: 20, z: 0}
+  - {x: 20, y: 20, z: 0}
 --- !u!114 &1152128401
 MonoBehaviour:
   m_ObjectHideFlags: 0

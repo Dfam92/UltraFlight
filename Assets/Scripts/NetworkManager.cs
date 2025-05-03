@@ -7,8 +7,8 @@ public class GameManager : NetworkBehaviour
 {
     [SerializeField] NetworkRunner runner;
     [SerializeField] string sessionId;
-    [Networked, Capacity(8), Tooltip("The Network Behaviour references for the players in their starting position order.")]
-    public NetworkArray<NetworkBehaviourId> playerList => default;
+    //[Networked, Capacity(8), Tooltip("The Network Behaviour references for the players in their starting position order.")]
+    //public NetworkArray<NetworkBehaviourId> playerList => default;
 
     private void Awake()
     {
