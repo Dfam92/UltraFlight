@@ -41,10 +41,12 @@ public class PlayerMovement : NetworkBehaviour
     public float TiltXSpeed = 5f;
 
     private bool _inputBlocked = false;
+    private AudioManager _audioManager;
 
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
+        _audioManager = GetComponent<AudioManager>();
     }
 
     private void Start()
@@ -144,6 +146,18 @@ public class PlayerMovement : NetworkBehaviour
         AlignToGroundNormal();
         ApplyTiltRotation(horizontal);
         ApplyJumpTilt();
+
+        // Áudio de aceleração
+        if (Mathf.Abs(currentForwardSpeed) > 0.1f)
+        {
+            float normalizedSpeed = Mathf.InverseLerp(0f, MaxForwardSpeed, Mathf.Abs(currentForwardSpeed));
+            float pitch = Mathf.Lerp(0.5f, 2f, normalizedSpeed); // Ajuste os valores conforme desejado
+            _audioManager.UpdateAccelPitch(pitch);
+        }
+        else
+        {
+            _audioManager.StopAccel();
+        }
     }
 
     private void ApplyTiltRotation(float horizontalInput)
@@ -251,12 +265,29 @@ public class PlayerMovement : NetworkBehaviour
         Invoke(nameof(ResetMaxSpeed), 1);
     }
 
+    public void OnTriggerDesacelerationFloor()
+    {
+        Debug.Log("Stopping");
+        Acceleration = Acceleration - 20;
+        MaxForwardSpeed = MaxForwardSpeed - 50;
+        currentForwardSpeed -= 50;
+        Invoke(nameof(ResetMaxSpeed), 1);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("BoostFloor"))
         {
             OnTriggerAccelerationFloor();
         }
+
+        //This isnt working
+        //if(other.CompareTag("Obstacles"))
+        //{
+        //    OnTriggerDesacelerationFloor();
+        //}
     }
+
+
 
 }

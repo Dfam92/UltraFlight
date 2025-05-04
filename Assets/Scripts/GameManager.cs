@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] string sessionId;
     public CanvasGroup canvasGroup;
     public float fadeDuration = 1f;
+    [SerializeField] TextMeshProUGUI buttonText;
+    [SerializeField] GameObject mainPanel;
+    [SerializeField] GameObject winPanel;
+    public bool raceWasFinished = false;
 
     private void Awake()
     {
@@ -16,7 +21,7 @@ public class GameManager : MonoBehaviour
     }
 
     public async void StartGame()
-    { 
+    {
 
         // The start game arguments setup the game.
         StartGameArgs startGameArgs = new StartGameArgs()
@@ -31,11 +36,13 @@ public class GameManager : MonoBehaviour
 
         if (results.Ok)
         {
+            ChangeTextToDone();
             FadeOut();
         }
         else
         {
-            ShowShutdown(results.ShutdownReason);
+            ChangeTextToRefresh();
+            //ShowShutdown(results.ShutdownReason);
         }
 
     }
@@ -43,6 +50,7 @@ public class GameManager : MonoBehaviour
     public void OnQuickJoinPressed()
     {
         StartGame();
+        ChangeTextToWait();
     }
 
     internal void ShowShutdown(ShutdownReason shutdownReason)
@@ -75,6 +83,30 @@ public class GameManager : MonoBehaviour
             {
                 canvasGroup.interactable = false;
                 canvasGroup.blocksRaycasts = false;
+                raceWasFinished = false;
             });
-        }
+
     }
+
+    public void ChangeTextToWait()
+    {
+        buttonText.text = "Loading...";
+    }
+
+    public void ChangeTextToDone()
+    {
+        buttonText.text = "Done";
+    }
+
+    public void ChangeTextToRefresh()
+    {
+        buttonText.text = "Refresh";
+    }
+
+    public void Win()
+    {
+        mainPanel.SetActive(false);
+        winPanel.SetActive(true);
+        FadeIn();
+    }
+}

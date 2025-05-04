@@ -535,6 +535,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7014697607693243183, guid: 564a2da68a6702e4598be65a56b33963, type: 3}
+      propertyPath: m_TagString
+      value: Obstacles
+      objectReference: {fileID: 0}
+    - target: {fileID: -7014697607693243183, guid: 564a2da68a6702e4598be65a56b33963, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}

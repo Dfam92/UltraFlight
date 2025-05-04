@@ -7,6 +7,8 @@ TagManager:
   - PlayerCamera
   - BoostFloor
   - Hole
+  - FinishLine
+  - Obstacles
   layers:
   - Default
   - TransparentFX
