@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         int randomId = Random.Range(1, 1000); // Range é inclusivo no min e exclusivo no max
-        sessionId = randomId.ToString();
+        //sessionId = randomId.ToString();
     }
 
     public async void StartGame()
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         StartGameArgs startGameArgs = new StartGameArgs()
         {
             GameMode = GameMode.Shared, // Client GameMode, could be Shared as well
-            SessionName = sessionId, // Session to Join
+            //SessionName = sessionId, // Session to Join
             PlayerCount = 4,
         };
 
