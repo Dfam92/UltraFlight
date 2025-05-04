@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerCamera
   - BoostFloor
+  - Hole
   layers:
   - Default
   - TransparentFX

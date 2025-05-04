@@ -300,6 +300,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b714433d110eeb4994f4b61853d7be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _networkTransform: {fileID: 7411057241746507462}
+  _checkpointTeleportManager: {fileID: 0}
+  _characterController: {fileID: 7808641761109947438}
+  _playerMovement: {fileID: 8107066053290867502}
 --- !u!1001 &3075984313272365751
 PrefabInstance:
   m_ObjectHideFlags: 0

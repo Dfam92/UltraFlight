@@ -1,26 +1,35 @@
 ﻿using Fusion;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 public class PlayerNetworkBehaviour : NetworkBehaviour, IPlayerLeft
 {
+    private string hole = "Hole";
+    [SerializeField] private NetworkTransform _networkTransform;
+    [SerializeField] private CheckpointTeleportManager _checkpointTeleportManager;
+    [SerializeField] private CharacterController _characterController;
+    [SerializeField] private PlayerMovement _playerMovement;
+
+
     public override async void Spawned()
     {
-        if (HasStateAuthority)
-        {
-            PlayerRef localPlayer = Runner.LocalPlayer;
-            Vector3 spawnPosition = GetSpawnPosition(localPlayer.PlayerId - 1);
-            Debug.Log($"🔢 Spawn position for player {localPlayer}: {spawnPosition}");
-            NetworkTransform netTransform = GetComponent<NetworkTransform>();
-            await Task.Delay(1000); // ⏳ Espera 2 segundos antes de teleportar
-            netTransform.Teleport(spawnPosition);
-            //gameObject.transform.position = spawnPosition;
-        }
+        PlayerRef localPlayer = Runner.LocalPlayer;
+        Vector3 spawnPosition = GetSpawnPosition(localPlayer.PlayerId - 1);
+        Debug.Log($"🔢 Spawn position for player {localPlayer}: {spawnPosition}");
+        await Task.Delay(1000); // ⏳ Espera 2 segundos antes de teleportar
+        _networkTransform.Teleport(spawnPosition);
+        //gameObject.transform.position = spawnPosition;
     }
 
 
     public void PlayerLeft(PlayerRef player)
     {
         throw new System.NotImplementedException();
+    }
+
+    private void OnEnable()
+    {
+        _checkpointTeleportManager = FindFirstObjectByType<CheckpointTeleportManager>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -47,6 +56,24 @@ public class PlayerNetworkBehaviour : NetworkBehaviour, IPlayerLeft
             case 2: return spawner.spawnPositions[playerIndex];
             case 3: return spawner.spawnPositions[playerIndex];
             default: return Vector3.zero;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Only the state authority to the player can cause them to explode
+        if (!HasStateAuthority)
+            return;
+
+        if (other.CompareTag(hole) && _characterController.enabled)
+        {
+            Debug.Log("CAIU NO BURACO");
+           
+            _characterController.enabled = false;
+            transform.position = _checkpointTeleportManager.transformToMovePlayer.position;
+            transform.rotation = _checkpointTeleportManager.transformToMovePlayer.rotation;
+            _playerMovement.ResetMovementState();
+            _characterController.enabled = true;
         }
     }
 }
